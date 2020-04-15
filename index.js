@@ -29,7 +29,7 @@ app.use(express.json());
 //use users route for api/users
 app.use("/api/users", usersRoute);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3061;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 
@@ -50,55 +50,7 @@ app.get('/home', auth, (req, res) => {
     })
 })
 
-//This end point helps to create a new todo
-app.post('/createTodo', auth, (req, res) => {
-    const todo = req.body;
-    console.log('todo', todo)
-    const description = todo.description;
-    const title = todo.title;
-    if(!description){
-        return res.status(400).send({
-            code: 400,
-            error: true,
-            message: "Kindly add description to the request body"
-        })
-    }
-   
-    if(!title){
-        return res.status(400).send({
-            code: 400,
-            error: true,
-            message: "Kindly add title to the request body"
-        })
-    }
-    console.log('new todo', todo);
-    const newTodo = { 
-        id: uuid(),
-        title,
-        description,
-        completed:false
-    };
 
-    TodoModel.create(newTodo)
-        .then((data) => {
-            console.log('Todo was created successfully', data)
-            return res.status(201).send({
-                code: 201,
-                error: false,
-                message: "Todo created successfully",
-                data: newTodo
-            });
-        })
-        .catch((error) => {
-            console.log('There was an error saving the data', error)
-            return res.status(500).send({
-                code: 500,
-                error: true,
-                message: "Internal server error",
-            });
-        })
-    
-});
 
 //At this point, all todos are displayed
 app.get('/all_todo', auth, (req, res) => {
