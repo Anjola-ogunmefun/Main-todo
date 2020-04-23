@@ -95,6 +95,15 @@ todoRoute.get('/one-todo', auth, (req, res) => {
         })
     }
 
+    if({id:false}){
+        return res.status(404).send({
+            code: 404,
+            error: true,
+            message: "Todo not found"
+        })
+    }
+
+   
     TodoModel.findOne({id: req.body.id})
     .then((data) => {
         console.log("Todo has been found" , data)
@@ -105,6 +114,7 @@ todoRoute.get('/one-todo', auth, (req, res) => {
             data
         });
     })
+    
     .catch((error) => {
         console.log('There was an error fetching todo', error)
         return res.status(500).send({
@@ -113,7 +123,7 @@ todoRoute.get('/one-todo', auth, (req, res) => {
             message: "Internal server error",
         });
     })
-
+    
 })
 
 
@@ -186,7 +196,8 @@ TodoModel.findOneAndUpdate({id:req.body.id}, params, {new: true} )
     };
 
     TodoModel.findOneAndDelete({id: req.body.id})
-    .then((data) => {
+    
+.then((data) => {
         console.log("Todo has been deleted" , data)
        return res.status(200).send({
         code: 200,
